@@ -48,6 +48,30 @@ resource "azurerm_cosmosdb_sql_database" "app" {
   throughput          = var.cosmos_db_database_throughput
 }
 
+resource "azurerm_cosmosdb_sql_container" "app_events" {
+  name                = "events"
+  resource_group_name = var.resource_group.name
+  account_name        = azurerm_cosmosdb_account.app.name
+  database_name       = azurerm_cosmosdb_sql_database.app.name
+  partition_key_path  = "/community/id"
+}
+
+resource "azurerm_cosmosdb_sql_container" "app_organizers" {
+  name                = "organizers"
+  resource_group_name = var.resource_group.name
+  account_name        = azurerm_cosmosdb_account.app.name
+  database_name       = azurerm_cosmosdb_sql_database.app.name
+  partition_key_path  = "/community/id"
+}
+
+resource "azurerm_cosmosdb_sql_container" "app_participants" {
+  name                = "participants"
+  resource_group_name = var.resource_group.name
+  account_name        = azurerm_cosmosdb_account.app.name
+  database_name       = azurerm_cosmosdb_sql_database.app.name
+  partition_key_path  = "/event/id"
+}
+
 resource "azurerm_monitor_diagnostic_setting" "cosmosdb_account_app" {
   name                       = "diag-${azurerm_cosmosdb_account.app.name}"
   target_resource_id         = azurerm_cosmosdb_account.app.id

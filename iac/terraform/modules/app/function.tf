@@ -52,6 +52,16 @@ resource "azurerm_monitor_diagnostic_setting" "storage_account_app" {
       enabled = true
     }
   }
+
+  metric {
+    category = "Capacity"
+    enabled  = true
+
+    retention_policy {
+      days    = 30
+      enabled = true
+    }
+  }
 }
 
 resource "azurerm_application_insights" "app" {
@@ -109,6 +119,7 @@ resource "azurerm_function_app" "app" {
   }
 
   site_config {
+    always_on     = true
     ftps_state    = "Disabled"
     http2_enabled = true
   }
